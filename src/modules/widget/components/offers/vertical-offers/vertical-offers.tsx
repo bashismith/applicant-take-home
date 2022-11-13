@@ -25,7 +25,7 @@ const VerticalOffers: React.FC<OfferView> = ({ offers, viewSettings }): React.Re
         if (isCheckoutPanelCollapsedView) {
             dispatch(toggleIsCollapsedCheckoutPanelOpen());
         }
-        dispatch(setSelectedOfferCard(offer))
+        dispatch(setSelectedOfferCard(offer));
     };
 
     const returnOffers = () => {
