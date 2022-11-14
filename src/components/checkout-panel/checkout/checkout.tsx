@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GiftCard } from '../../common/ui-widgets/gift-card';
 import checkoutPanelViewWrapper from '../view-wrapper';
 import CheckoutButton from './checkout-button';
@@ -6,19 +6,30 @@ import { useAppSelector } from '../../../hooks';
 import RedemptionAmounts from './RedemptionAmounts';
 import './checkout.less';
 import { PrizeoutOfferValueOptions, selectOfferCard } from '../../../slices/offers-slice';
-import { setSelectedOfferPrice } from '../../../slices/checkout-slice';
+import { setSelectedOfferPrice, selectOfferPrice } from '../../../slices/checkout-slice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../store';
 
 const CheckoutPanelView: React.FC = (): React.ReactElement => {
-    const offerCard = useAppSelector(selectOfferCard);
     const dispatch = useDispatch<AppDispatch>();
+    const offerCard = useAppSelector(selectOfferCard);
+    const giftCardValue = useAppSelector(selectOfferPrice);
 
-    console.log(offerCard);
-
-    const onClickHandler = (option: PrizeoutOfferValueOptions) => {
-        dispatch(setSelectedOfferPrice(option));
+    const onClickHandler = (price: PrizeoutOfferValueOptions) => {
+        dispatch(setSelectedOfferPrice(price));
     };
+
+    const valuesFormatted = (i: number) =>
+        i.toLocaleString('en-US', {
+            currency: 'USD',
+            style: 'currency',
+        });
+
+    // console.log(giftCardValue);
+
+    const price = valuesFormatted(giftCardValue?.cost_in_cents / 100);
+    const bonusFormatted = valuesFormatted((giftCardValue?.value_in_cents - giftCardValue?.cost_in_cents) / 100);
+    const valueFormatted = valuesFormatted(giftCardValue?.value_in_cents / 100);
 
     return (
         <section className="checkout">
@@ -46,6 +57,19 @@ const CheckoutPanelView: React.FC = (): React.ReactElement => {
                                 ))}
                             </section>
                         </>
+                    )}
+                    {giftCardValue && (
+                        <section className="checkout_details">
+                            <div className='detail'>
+                                <span>Redemption Amount:</span> <span>{price}</span>
+                            </div>
+                            <div className=" detail bonus-detail">
+                                <span>Prizeout Bonus (+{giftCardValue.display_bonus}%):</span> <span>{bonusFormatted}</span>
+                            </div>
+                            <div className='detail'>
+                                <span>You Get:</span> <span>{valueFormatted}</span>
+                            </div>
+                        </section>
                     )}
                 </div>
                 <div className="grid__item">
