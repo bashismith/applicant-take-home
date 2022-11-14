@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { GiftCard } from '../../common/ui-widgets/gift-card';
 import checkoutPanelViewWrapper from '../view-wrapper';
 import CheckoutButton from './checkout-button';
@@ -60,13 +60,14 @@ const CheckoutPanelView: React.FC = (): React.ReactElement => {
                     )}
                     {giftCardValue && (
                         <section className="checkout_details">
-                            <div className='detail'>
+                            <div className="detail">
                                 <span>Redemption Amount:</span> <span>{price}</span>
                             </div>
                             <div className=" detail bonus-detail">
-                                <span>Prizeout Bonus (+{giftCardValue.display_bonus}%):</span> <span>{bonusFormatted}</span>
+                                <span>Prizeout Bonus (+{giftCardValue.display_bonus}%):</span>{' '}
+                                <span>{bonusFormatted}</span>
                             </div>
-                            <div className='detail'>
+                            <div className="detail">
                                 <span>You Get:</span> <span>{valueFormatted}</span>
                             </div>
                         </section>
